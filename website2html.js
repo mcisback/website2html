@@ -18,6 +18,7 @@ Options:
   -u, --url <url>           URL to fetch (can also be passed as positional arg)
   -c, --loadcookies <file>  Path to JSON file containing cookies to load
   -s, --screenshot <file>   Save a screenshot to the specified path
+  -a, --user-agent <user_agent_string>   Set the user agent
   -v, --verbose             Enable verbose output
   -n, --noheadless          Run browser in non-headless mode (visible window)
   -h, --help                Show this help message
@@ -71,6 +72,10 @@ try {
         type: "string",
         short: "s",
       },
+      userAgent: {
+        type: "string",
+        short: "a",
+      },
       verbose: {
         type: "boolean",
         short: "v",
@@ -101,6 +106,7 @@ if (values.help) {
 const url = positionals[0] ?? values.url;
 let loadCookies = values.loadcookies ?? false;
 const screenshot = values.screenshot ?? false;
+const userAgent = values.userAgent ?? null;
 const verbose = values.verbose;
 const headless = values.noheadless ? false : "new";
 
@@ -136,6 +142,10 @@ if (verbose) {
   console.error(`  Headless: ${headless}`);
 }
 
+if (userAgent && verbose) {
+  console.error(`Using User Agent: ${userAgent}`);
+}
+
 const puppeteer = require("puppeteer");
 
 (async () => {
@@ -149,6 +159,9 @@ const puppeteer = require("puppeteer");
     });
 
     const page = await browser.newPage();
+    if (userAgent) {
+      await page.setUserAgent(userAgent);
+    }
 
     // Load cookies if provided
     if (loadCookies) {
