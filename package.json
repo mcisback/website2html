@@ -1,0 +1,14 @@
+{
+  "name": "website2html",
+  "version": "1.0.0",
+  "main": "website2html.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "puppeteer": "^24.34.0"
+  }
+}
